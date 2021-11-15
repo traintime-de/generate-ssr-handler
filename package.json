@@ -1,6 +1,6 @@
 {
   "name": "generate-next-ssr-handler",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Reduces boilerplate for writing NextJS 'getServerSideProps' functions",
   "keywords": [
     "next",
@@ -8,7 +8,7 @@
     "ssr"
   ],
   "main": "./dist/index.js",
-  "types": "./dist/types.d.ts",
+  "types": "./dist/index.d.ts",
   "files": [
     "dist",
     "LICENSE",
