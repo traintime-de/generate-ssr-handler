@@ -1,6 +1,6 @@
 {
   "name": "generate-next-ssr-handler",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Reduces boilerplate for writing NextJS 'getServerSideProps' functions",
   "keywords": [
     "next",
@@ -9,6 +9,11 @@
   ],
   "main": "./dist/index.js",
   "types": "./dist/types.d.ts",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "repository": "git@github.com:traintime-de/generate-ssr-handler.git",
   "author": "dev@traintime.de",
   "license": "MIT",
