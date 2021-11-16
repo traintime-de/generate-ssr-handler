@@ -13,8 +13,8 @@ const defaultCaseHandlingErrorHandler = () => {
 const wrapCaseHandler: SsrCaseHandlerWrapper = <ContextType>(
   caseHandler: SsrCaseHandler<ContextType>,
   context: ContextType,
-  onCaseHandlingError: SsrErrorHandler,
-  getErrorPageUrl: SsrErrorPageUrlGetter<ContextType>
+  getErrorPageUrl: SsrErrorPageUrlGetter<ContextType>,
+  onCaseHandlingError?: SsrErrorHandler
 ) => {
   const wrappedCaseHandler: WrappedSsrCaseHandler = async (req) => {
     // Handle SSR case

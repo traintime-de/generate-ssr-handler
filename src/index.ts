@@ -74,8 +74,8 @@ const generateSsrHandler: SrrHandlerGenerator = <ContextType>(
         wrapCaseHandler(
           caseHandler,
           context,
-          onCaseHandlingError,
-          getErrorPageUrl
+          getErrorPageUrl,
+          onCaseHandlingError
         )
       )
 

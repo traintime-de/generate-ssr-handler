@@ -56,8 +56,8 @@ export type SsrErrorPageUrlGetter<ContextType> = (
 export type SsrCaseHandlerWrapper = <ContextType>(
   caseHandler: SsrCaseHandler<ContextType>,
   context: ContextType,
-  onCaseHandlingError: SsrErrorHandler,
-  getErrorPageUrl: SsrErrorPageUrlGetter<ContextType>
+  getErrorPageUrl: SsrErrorPageUrlGetter<ContextType>,
+  onCaseHandlingError?: SsrErrorHandler
 ) => WrappedSsrCaseHandler
 
 /***********************************************/
@@ -77,9 +77,9 @@ export type WrappedSsrCaseListHandler = (
 export type SsrHandlerConfig<ContextType> = {
   contextGenerator: SsrContextGenerator<ContextType>
   globalCaseHandlers: Array<SsrCaseHandler<ContextType>>
-  onContextGenerationError: any
-  onCaseHandlingError: any
   getErrorPageUrl: SsrErrorPageUrlGetter<ContextType>
+  onContextGenerationError?: any
+  onCaseHandlingError?: any
 }
 
 export type SsrHandler<ContextType> = (
