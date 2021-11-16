@@ -52,17 +52,21 @@ export type SsrErrorPageUrlGetter<ContextType> = (
   appContext?: ContextType
 ) => string
 
-export type SsrErrorHandler<ContextType> = (
+export type SsrCaseErrorHandler<ContextType> = (
   err: unknown,
   nextContext: GetServerSidePropsContext,
-  appContext?: ContextType
-) => Promise<void>
+  appContext: ContextType
+) => void
+
+export type SsrCaseErrorHandlerGetter = <
+  ContextType
+>() => SsrCaseErrorHandler<ContextType>
 
 export type SsrCaseHandlerWrapper = <ContextType>(
   caseHandler: SsrCaseHandler<ContextType>,
   nextContext: ContextType,
   getErrorPageUrl: SsrErrorPageUrlGetter<ContextType>,
-  onCaseHandlingError?: SsrErrorHandler<ContextType>
+  onCaseHandlingError?: SsrCaseErrorHandler<ContextType>
 ) => WrappedSsrCaseHandler
 
 /***********************************************/
@@ -79,12 +83,17 @@ export type WrappedSsrCaseListHandler = (
 /******************** SSR **********************/
 /***********************************************/
 
+export type SsrContextGenerationErrorHandler = (
+  err: unknown,
+  nextContext: GetServerSidePropsContext
+) => void
+
 export type SsrHandlerConfig<ContextType> = {
   contextGenerator: SsrContextGenerator<ContextType>
   globalCaseHandlers: Array<SsrCaseHandler<ContextType>>
   getErrorPageUrl: SsrErrorPageUrlGetter<ContextType>
-  onContextGenerationError?: any
-  onCaseHandlingError?: any
+  onContextGenerationError?: SsrContextGenerationErrorHandler
+  onCaseHandlingError?: SsrCaseErrorHandler<ContextType>
 }
 
 export type SsrHandler<ContextType> = (

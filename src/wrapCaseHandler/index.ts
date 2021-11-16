@@ -1,20 +1,30 @@
 import {
+  SsrCaseErrorHandler,
+  SsrCaseErrorHandlerGetter,
   SsrCaseHandler,
   SsrCaseHandlerWrapper,
-  SsrErrorHandler,
   SsrErrorPageUrlGetter,
   WrappedSsrCaseHandler,
 } from '../types'
 
-const defaultCaseHandlingErrorHandler = () => {
-  throw new Error(`Failed to handle SSR case.`)
+const getDefaultCaseErrorHandler: SsrCaseErrorHandlerGetter = <
+  ContextType
+>() => {
+  const defaultCaseHandlingErrorHandler: SsrCaseErrorHandler<ContextType> = (
+    err
+  ) => {
+    const error = err as Error
+    if (error.message) console.error(error.message)
+    throw new Error(`Failed to handle SSR case.`)
+  }
+  return defaultCaseHandlingErrorHandler
 }
 
 const wrapCaseHandler: SsrCaseHandlerWrapper = <ContextType>(
   caseHandler: SsrCaseHandler<ContextType>,
   appContext: ContextType,
   getErrorPageUrl: SsrErrorPageUrlGetter<ContextType>,
-  onCaseHandlingError?: SsrErrorHandler<ContextType>
+  onCaseHandlingError?: SsrCaseErrorHandler<ContextType>
 ) => {
   const wrappedCaseHandler: WrappedSsrCaseHandler = async (nextContext) => {
     // Handle SSR case
@@ -22,7 +32,8 @@ const wrapCaseHandler: SsrCaseHandlerWrapper = <ContextType>(
     try {
       return handleCase(nextContext, appContext)
     } catch (err) {
-      const handleError = onCaseHandlingError ?? defaultCaseHandlingErrorHandler
+      const handleError =
+        onCaseHandlingError ?? getDefaultCaseErrorHandler<ContextType>()
       handleError(err, nextContext, appContext)
       const errorPageUrl = getErrorPageUrl(err, nextContext, appContext)
       return {

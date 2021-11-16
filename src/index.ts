@@ -3,12 +3,17 @@ import handleWrappedCases from './handleWrappedCases'
 import {
   SrrHandlerGenerator,
   SsrCaseHandler,
+  SsrContextGenerationErrorHandler,
   SsrHandler,
   SsrHandlerConfig,
 } from './types'
 import wrapCaseHandler from './wrapCaseHandler'
 
-const defaultContextGenerationErrorHandler = () => {
+const defaultContextGenerationErrorHandler: SsrContextGenerationErrorHandler = (
+  err
+) => {
+  const error = err as Error
+  if (error.message) console.error(error.message)
   throw new Error(`Failed to generate SSR context.`)
 }
 
@@ -50,7 +55,7 @@ const generateSsrHandler: SrrHandlerGenerator = <ContextType>(
         } catch (err) {
           const handleError =
             onContextGenerationError ?? defaultContextGenerationErrorHandler
-          handleError(req, err)
+          handleError(err, nextContext)
           return {
             success: false,
             context: null,
