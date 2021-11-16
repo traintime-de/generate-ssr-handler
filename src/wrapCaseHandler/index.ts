@@ -30,7 +30,7 @@ const wrapCaseHandler: SsrCaseHandlerWrapper = <ContextType>(
     // Handle SSR case
     const handleCase = caseHandler
     try {
-      return handleCase(nextContext, appContext)
+      return await handleCase(nextContext, appContext)
     } catch (err) {
       const handleError =
         onCaseHandlingError ?? getDefaultCaseErrorHandler<ContextType>()

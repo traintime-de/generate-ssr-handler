@@ -93,7 +93,10 @@ const generateSsrHandler: SrrHandlerGenerator = <ContextType>(
       )
 
       // Handle cases
-      const ssrResult = handleWrappedCases(nextContext, wrappedCaseHandlers)
+      const ssrResult = await handleWrappedCases(
+        nextContext,
+        wrappedCaseHandlers
+      )
       return ssrResult
     }
 

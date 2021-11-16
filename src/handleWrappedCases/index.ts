@@ -33,7 +33,11 @@ const handleWrappedCases: WrappedSsrCaseListHandler = async (
   // Continue handling cases and combine results
   const remainingHandlers = wrappedCaseHandlers.slice(1)
   const combinedResult = { props: combinedProps }
-  return handleWrappedCases(nextContext, remainingHandlers, combinedResult)
+  return await handleWrappedCases(
+    nextContext,
+    remainingHandlers,
+    combinedResult
+  )
 }
 
 export default handleWrappedCases

@@ -36,7 +36,7 @@ export type SsrCaseResult =
 export type SsrCaseHandler<ContextType> = (
   nextContext: GetServerSidePropsContext,
   appContext: ContextType
-) => SsrCaseResult
+) => Promise<SsrCaseResult>
 
 export type WrappedSsrCaseHandler = (
   nextContext: GetServerSidePropsContext
