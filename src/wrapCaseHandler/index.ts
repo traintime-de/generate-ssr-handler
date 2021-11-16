@@ -12,19 +12,19 @@ const defaultCaseHandlingErrorHandler = () => {
 
 const wrapCaseHandler: SsrCaseHandlerWrapper = <ContextType>(
   caseHandler: SsrCaseHandler<ContextType>,
-  context: ContextType,
+  appContext: ContextType,
   getErrorPageUrl: SsrErrorPageUrlGetter<ContextType>,
-  onCaseHandlingError?: SsrErrorHandler
+  onCaseHandlingError?: SsrErrorHandler<ContextType>
 ) => {
-  const wrappedCaseHandler: WrappedSsrCaseHandler = async (req) => {
+  const wrappedCaseHandler: WrappedSsrCaseHandler = async (nextContext) => {
     // Handle SSR case
     const handleCase = caseHandler
     try {
-      return handleCase(req, context as ContextType)
+      return handleCase(nextContext, appContext)
     } catch (err) {
       const handleError = onCaseHandlingError ?? defaultCaseHandlingErrorHandler
-      handleError(req, err)
-      const errorPageUrl = getErrorPageUrl(req, context)
+      handleError(err, nextContext, appContext)
+      const errorPageUrl = getErrorPageUrl(err, nextContext, appContext)
       return {
         redirect: {
           permanent: false,

@@ -34,30 +34,35 @@ export type SsrCaseResult =
   | SsrCaseNotFoundResult
 
 export type SsrCaseHandler<ContextType> = (
-  req: SsrRequest,
-  ctx: ContextType
+  nextContext: GetServerSidePropsContext,
+  appContext: ContextType
 ) => SsrCaseResult
 
 export type WrappedSsrCaseHandler = (
-  req: SsrRequest
+  nextContext: GetServerSidePropsContext
 ) => Promise<SsrCaseAmbiguousResult>
 
 export type SsrContextGenerator<ContextType> = (
-  req: SsrRequest
+  nextContext: GetServerSidePropsContext
 ) => Promise<ContextType>
 
-export type SsrErrorHandler = (req: SsrRequest, err: unknown) => Promise<void>
-
 export type SsrErrorPageUrlGetter<ContextType> = (
-  req: SsrRequest,
-  context: ContextType | null
+  err: unknown,
+  nextContext: GetServerSidePropsContext,
+  appContext?: ContextType
 ) => string
+
+export type SsrErrorHandler<ContextType> = (
+  err: unknown,
+  nextContext: GetServerSidePropsContext,
+  appContext?: ContextType
+) => Promise<void>
 
 export type SsrCaseHandlerWrapper = <ContextType>(
   caseHandler: SsrCaseHandler<ContextType>,
-  context: ContextType,
+  nextContext: ContextType,
   getErrorPageUrl: SsrErrorPageUrlGetter<ContextType>,
-  onCaseHandlingError?: SsrErrorHandler
+  onCaseHandlingError?: SsrErrorHandler<ContextType>
 ) => WrappedSsrCaseHandler
 
 /***********************************************/

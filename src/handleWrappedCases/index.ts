@@ -11,12 +11,11 @@ const handleWrappedCases: WrappedSsrCaseListHandler = async (
 ) => {
   if (wrappedCaseHandlers.length === 0) return previousResult
 
-  const { req } = nextContext
   const [handleCurrentCase] = wrappedCaseHandlers
   const { props: prevProps } = previousResult
 
   // Handle current case
-  const currentResult = await handleCurrentCase(req)
+  const currentResult = await handleCurrentCase(nextContext)
 
   // Return if 'redirect' or 'not found' scenario
   if (currentResult.redirect) return currentResult as SsrCaseRedirectResult

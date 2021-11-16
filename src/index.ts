@@ -39,9 +39,10 @@ const generateSsrHandler: SrrHandlerGenerator = <ContextType>(
       const generateContext: () => Promise<{
         success: boolean
         context: ContextType | null
+        err?: unknown
       }> = async () => {
         try {
-          const context = await contextGenerator(req)
+          const context = await contextGenerator(nextContext)
           return {
             success: true,
             context,
@@ -53,13 +54,20 @@ const generateSsrHandler: SrrHandlerGenerator = <ContextType>(
           return {
             success: false,
             context: null,
+            err,
           }
         }
       }
-      const { success: wasContextGenerated, context: ambiguousContext } =
-        await generateContext()
+      const {
+        success: wasContextGenerated,
+        context: ambiguousContext,
+        err: contextGenerationError,
+      } = await generateContext()
       if (!wasContextGenerated) {
-        const errorPageUrl = getErrorPageUrl(req, ambiguousContext)
+        const errorPageUrl = getErrorPageUrl(
+          contextGenerationError,
+          nextContext
+        )
         return {
           redirect: {
             permanent: false,
